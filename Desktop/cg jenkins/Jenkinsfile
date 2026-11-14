@@ -4,8 +4,8 @@ stages {
 
     stage('Checkout') {
         steps {
-            git branch: 'main',
-                url: 'https://github.com/24h51a05c2-dev/JenkinsExt.git'
+            git branch: 'master',
+    url: 'https://github.com/24h51a05c2-dev/javapipeline.git'
         }
     }
 
