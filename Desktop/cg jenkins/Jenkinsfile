@@ -10,12 +10,12 @@ stages {
     }
 
     stage('Build and Test') {
-        steps {
-            dir('JavaApp') {
-                bat 'mvn clean test'
-            }
+    steps {
+        dir('JavaApp') {
+            bat 'mvn clean test'
         }
     }
+}
 
     stage('Package') {
         steps {
