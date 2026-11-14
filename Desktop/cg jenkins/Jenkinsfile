@@ -2,45 +2,46 @@ pipeline { agent any
 
 stages {
 
-    stage('Checkout') {
+    stage('Git Checkout') {
         steps {
             git branch: 'master',
                 url: 'https://github.com/24h51a05c2-dev/javapipeline.git'
+            echo 'Code downloaded from GitHub'
         }
     }
 
-    stage('Build and Test') {
-    steps {
-        dir('JavaApp') {
-            bat 'mvn clean test'
+    stage('Compile') {
+        steps {
+            bat '"C:\\Maven\\apache-maven-3.10.0\\bin\\mvn.cmd" -f JavaApp\\pom.xml clean compile'
         }
     }
-}
+
+    stage('Test') {
+        steps {
+            bat '"C:\\Maven\\apache-maven-3.10.0\\bin\\mvn.cmd" -f JavaApp\\pom.xml test'
+        }
+    }
 
     stage('Package') {
         steps {
-            dir('JavaApp') {
-                bat 'mvn package'
-            }
+            bat '"C:\\Maven\\apache-maven-3.10.0\\bin\\mvn.cmd" -f JavaApp\\pom.xml package'
         }
     }
 
-    stage('Execute') {
+    stage('Run Application') {
         steps {
-            dir('JavaApp') {
-                bat 'java -cp target/classes com.example.App'
-            }
+            bat 'java -cp JavaApp\\target\\classes com.example.App'
         }
     }
 }
 
 post {
     success {
-        echo 'Pipeline executed successfully!'
+        echo 'BUILD SUCCESSFUL!'
     }
 
     failure {
-        echo 'Pipeline failed!'
+        echo 'BUILD FAILED!'
     }
 }
 
