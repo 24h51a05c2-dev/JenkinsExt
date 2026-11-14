@@ -5,26 +5,42 @@ stages {
     stage('Checkout') {
         steps {
             git branch: 'master',
-    url: 'https://github.com/24h51a05c2-dev/javapipeline.git'
+                url: 'https://github.com/24h51a05c2-dev/javapipeline.git'
         }
     }
 
     stage('Build and Test') {
         steps {
-            bat 'mvn clean test'
+            dir('JavaApp') {
+                bat 'mvn clean test'
+            }
         }
     }
 
     stage('Package') {
         steps {
-            bat 'mvn package'
+            dir('JavaApp') {
+                bat 'mvn package'
+            }
         }
     }
 
     stage('Execute') {
         steps {
-            bat 'java -cp target/classes com.example.App'
+            dir('JavaApp') {
+                bat 'java -cp target/classes com.example.App'
+            }
         }
+    }
+}
+
+post {
+    success {
+        echo 'Pipeline executed successfully!'
+    }
+
+    failure {
+        echo 'Pipeline failed!'
     }
 }
 
